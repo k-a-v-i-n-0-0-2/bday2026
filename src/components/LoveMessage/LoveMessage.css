@@ -1,0 +1,16 @@
+.message-container {
+    text-align: center;
+    margin: 40px 0;
+  }
+  
+  .message-container h1 {
+    font-size: 2.5rem;
+    color: #ff6b6b;
+    min-height: 60px;
+  }
+  
+  @media (max-width: 768px) {
+    .message-container h1 {
+      font-size: 1.8rem;
+    }
+  }

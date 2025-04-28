@@ -1,0 +1,543 @@
+/* Gallery.css */
+.love-diary {
+  position: relative;
+  min-height: 100vh;
+  padding: 4rem 3rem;
+  background-color: #f5ebdd;
+  background-image: 
+    url('https://www.transparenttextures.com/patterns/cream-paper.png'),
+    linear-gradient(to right, rgba(245, 235, 221, 0.8), rgba(245, 235, 221, 0.9));
+  box-shadow: inset 0 0 150px rgba(139, 69, 19, 0.1);
+  overflow: hidden;
+  font-family: 'Cormorant Garamond', serif;
+  color: #3a2511;
+}
+
+/* Diary Cover Effect */
+.diary-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: linear-gradient(to bottom, 
+    rgba(91, 45, 13, 0.3), 
+    rgba(91, 45, 13, 0.1));
+  z-index: 1;
+}
+
+/* Diary Pages Texture */
+.diary-pages {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(#f5ebdd, #f5ebdd 29px, 
+    rgba(139, 69, 19, 0.1) 30px);
+  background-size: 100% 30px;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.page-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, 
+    rgba(91, 45, 13, 0.3), 
+    rgba(91, 45, 13, 0.1));
+}
+
+.page-lines {
+  position: absolute;
+  left: 50px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(139, 69, 19, 0.1);
+}
+
+/* Wax Seal */
+.wax-seal {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: #8b4513;
+  color: #f8e5d6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 
+    0 2px 10px rgba(139, 69, 19, 0.5),
+    inset 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.wax-seal:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(248, 229, 214, 0.5);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Diary Ribbon */
+.diary-ribbon {
+  position: absolute;
+  top: 0;
+  right: 100px;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    #d4a373,
+    #f8e5d6 20%,
+    #f8e5d6 80%,
+    #d4a373
+  );
+  transform: rotate(2deg);
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.diary-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 4rem;
+  z-index: 2;
+}
+
+.header-scroll, .header-letter {
+  position: absolute;
+  color: #8b4513;
+  font-size: 2.5rem;
+  opacity: 0.7;
+}
+
+.header-scroll {
+  top: -20px;
+  left: 10%;
+  transform: rotate(-15deg);
+}
+
+.header-letter {
+  top: -10px;
+  right: 10%;
+  transform: rotate(10deg);
+}
+
+.diary-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #5c2e0d;
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+.diary-title span {
+  display: block;
+}
+
+.diary-title:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 25%;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #8b4513, transparent);
+}
+
+.diary-subtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: #a67c52;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d4a373, transparent);
+  margin: 2rem auto;
+  width: 60%;
+}
+
+.divider-heart, .divider-pen {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f5ebdd;
+  padding: 0 1rem;
+  color: #8b4513;
+  font-size: 1.2rem;
+}
+
+.divider-heart:first-child {
+  left: 30%;
+}
+
+.divider-pen {
+  left: 50%;
+}
+
+.divider-heart:last-child {
+  left: 70%;
+}
+
+.memory-albums {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.memory-chapter {
+  position: relative;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(139, 69, 19, 0.1);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  padding: 1.5rem;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+  overflow: hidden;
+}
+
+.memory-chapter.hovered {
+  transform: translateY(-5px);
+}
+
+.chapter-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.photo-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.memory-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  filter: sepia(0.3) brightness(0.95) contrast(1.05);
+}
+
+.memory-chapter:hover .memory-photo {
+  transform: scale(1.05);
+  filter: sepia(0.5) brightness(0.92) contrast(1.1);
+}
+
+.photo-corners {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.photo-corners .corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 8px solid transparent;
+}
+
+.photo-corners .top-left {
+  top: 0;
+  left: 0;
+  border-top: 8px solid #8b4513;
+  border-left: 8px solid #8b4513;
+}
+
+.photo-corners .top-right {
+  top: 0;
+  right: 0;
+  border-top: 8px solid #8b4513;
+  border-right: 8px solid #8b4513;
+}
+
+.photo-corners .bottom-left {
+  bottom: 0;
+  left: 0;
+  border-bottom: 8px solid #8b4513;
+  border-left: 8px solid #8b4513;
+}
+
+.photo-corners .bottom-right {
+  bottom: 0;
+  right: 0;
+  border-bottom: 8px solid #8b4513;
+  border-right: 8px solid #8b4513;
+}
+
+.photo-tape {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 120px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0.8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.photo-stains {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%238b4513" fill-opacity="0.05" d="M30,10 Q40,0 50,10 T70,10 Q80,0 90,10 T70,30 Q60,40 50,30 T30,10" /></svg>');
+  background-size: 150px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chapter-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chapter-details h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+  color: #5c2e0d;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.chapter-details h3:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 1px;
+  background: #d4a373;
+}
+
+.chapter-year {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: #a67c52;
+  margin-bottom: 1rem;
+}
+
+.chapter-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #8b4513;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.chapter-meta .pages {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chapter-meta .flowers {
+  font-family: 'Dancing Script', cursive;
+}
+
+.chapter-quote {
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+  color: #5c2e0d;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.chapter-quote:before {
+  content: '"';
+  font-size: 3rem;
+  color: #d4a373;
+  line-height: 0;
+  position: absolute;
+  left: -5px;
+  top: 15px;
+  opacity: 0.5;
+}
+
+.chapter-quote:after {
+  content: '"';
+  font-size: 3rem;
+  color: #d4a373;
+  line-height: 0;
+  position: absolute;
+  right: -5px;
+  bottom: -15px;
+  opacity: 0.5;
+}
+
+.read-chapter-btn {
+  margin-top: auto;
+  background: #8b4513;
+  color: #f8e5d6;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  box-shadow: 0 2px 5px rgba(139, 69, 19, 0.3);
+}
+
+.read-chapter-btn:hover {
+  background: #5c2e0d;
+}
+
+.chapter-decoration {
+  position: absolute;
+  pointer-events: none;
+}
+
+.ink-splotch {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  height: 80px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%238b4513" fill-opacity="0.05" d="M30,50 Q50,30 70,50 Q80,70 60,80 Q40,90 30,70 Q20,60 30,50"/></svg>');
+  background-repeat: no-repeat;
+  opacity: 0.3;
+}
+
+.flower-doodle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="none" stroke="%238b4513" stroke-width="1" stroke-opacity="0.1" d="M50,10 Q60,30 50,50 Q40,30 50,10 M30,30 Q50,20 70,30 Q60,50 30,30"/></svg>');
+  background-repeat: no-repeat;
+}
+
+.back-button {
+  background: #8b4513;
+  color: #f8e5d6;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(139, 69, 19, 0.4);
+  position: relative;
+  z-index: 3;
+}
+
+.back-button:hover {
+  background: #5c2e0d;
+  transform: translateX(-5px);
+}
+
+.diary-footer {
+  text-align: center;
+  margin-top: 5rem;
+  color: #8b4513;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.footer-signature {
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.signature-line {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #8b4513, transparent);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .love-diary {
+    padding: 3rem 1.5rem;
+  }
+  
+  .diary-title {
+    font-size: 2.8rem;
+  }
+  
+  .diary-subtitle {
+    font-size: 1.6rem;
+  }
+  
+  .memory-albums {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-scroll, .header-letter {
+    display: none;
+  }
+}
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&display=swap');

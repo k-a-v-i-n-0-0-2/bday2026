@@ -1,0 +1,437 @@
+/* Memory Wall with Diary Aesthetic */
+.memory-wall {
+  position: relative;
+  min-height: 100vh;
+  padding: 4rem 3rem;
+  background-color: #f5ebdd;
+  background-image: 
+    url('https://www.transparenttextures.com/patterns/cream-paper.png'),
+    linear-gradient(to right, rgba(245, 235, 221, 0.8), rgba(245, 235, 221, 0.9));
+  box-shadow: inset 0 0 150px rgba(139, 69, 19, 0.1);
+  overflow: hidden;
+  font-family: 'Cormorant Garamond', serif;
+  color: #3a2511;
+}
+
+/* Diary Cover Effect */
+.diary-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: linear-gradient(to bottom, 
+    rgba(91, 45, 13, 0.3), 
+    rgba(91, 45, 13, 0.1));
+  z-index: 1;
+}
+
+/* Diary Pages Texture */
+.diary-pages {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(#f5ebdd, #f5ebdd 29px, 
+    rgba(139, 69, 19, 0.1) 30px);
+  background-size: 100% 30px;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.page-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, 
+    rgba(91, 45, 13, 0.3), 
+    rgba(91, 45, 13, 0.1));
+}
+
+.page-lines {
+  position: absolute;
+  left: 50px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(139, 69, 19, 0.1);
+}
+
+/* Wax Seal */
+.wax-seal {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: #8b4513;
+  color: #f8e5d6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 
+    0 2px 10px rgba(139, 69, 19, 0.5),
+    inset 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  opacity: 0.9;
+}
+
+.wax-seal:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(248, 229, 214, 0.5);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header Styling */
+.header {
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #5c2e0d;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 25%;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #8b4513, transparent);
+}
+
+.subtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #a67c52;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Photo Stack Container */
+.photo-stack-container {
+  position: relative;
+  width: 320px;
+  height: 440px;
+  margin: 0 auto;
+  perspective: 1000px;
+  z-index: 2;
+}
+
+.polaroid {
+  position: absolute;
+  width: 100%;
+  background: white;
+  padding: 20px;
+  padding-bottom: 70px;
+  border-radius: 5px;
+  box-shadow: 0 10px 30px rgba(139, 69, 19, 0.2);
+  will-change: transform;
+  transition: all 0.4s ease;
+}
+
+.polaroid.active {
+  cursor: grab;
+  box-shadow: 0 15px 40px rgba(139, 69, 19, 0.3);
+  transform: translateY(-5px);
+}
+
+.polaroid-img {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.polaroid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.3) brightness(0.95);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.polaroid:hover img {
+  filter: sepia(0.1) brightness(1);
+}
+
+/* Photo Corners */
+.photo-corners {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 90px;
+  pointer-events: none;
+}
+
+.photo-corners .corner {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border: 6px solid transparent;
+}
+
+.photo-corners .top-left {
+  top: 0;
+  left: 0;
+  border-top: 6px solid rgba(139, 69, 19, 0.3);
+  border-left: 6px solid rgba(139, 69, 19, 0.3);
+}
+
+.photo-corners .top-right {
+  top: 0;
+  right: 0;
+  border-top: 6px solid rgba(139, 69, 19, 0.3);
+  border-right: 6px solid rgba(139, 69, 19, 0.3);
+}
+
+.photo-corners .bottom-left {
+  bottom: 0;
+  left: 0;
+  border-bottom: 6px solid rgba(139, 69, 19, 0.3);
+  border-left: 6px solid rgba(139, 69, 19, 0.3);
+}
+
+.photo-corners .bottom-right {
+  bottom: 0;
+  right: 0;
+  border-bottom: 6px solid rgba(139, 69, 19, 0.3);
+  border-right: 6px solid rgba(139, 69, 19, 0.3);
+}
+
+.photo-tape {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 100px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0.8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+}
+
+.color-bar {
+  height: 3px;
+  width: 100%;
+  margin: 5px 0 10px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #d4a373, #8b4513);
+}
+
+.caption {
+  text-align: center;
+}
+
+.caption h3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  margin: 0;
+  color: #5c2e0d;
+  margin-top: 5px;
+}
+
+.caption .date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #a67c52;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Progress Dots */
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(139, 69, 19, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot:hover {
+  transform: scale(1.2);
+  background: rgba(139, 69, 19, 0.4);
+}
+
+.dot.active {
+  background: #8b4513;
+  box-shadow: 0 0 8px rgba(139, 69, 19, 0.5);
+}
+
+/* Decorative Elements */
+.bubble {
+  position: fixed;
+  bottom: -50px;
+  border-radius: 50%;
+  opacity: 0.2;
+  background: #d4a373;
+  filter: blur(5px);
+  z-index: 0;
+}
+
+.floating-heart {
+  position: fixed;
+  font-size: 24px;
+  color: #8b4513;
+  opacity: 0.6;
+  z-index: 0;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+  will-change: transform;
+}
+
+.sparkles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #d4a373;
+  box-shadow: 0 0 8px 1px rgba(212, 163, 115, 0.6);
+}
+
+/* Final Message */
+.final-message {
+  position: fixed;
+  top: 75%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.final-message h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  color: #5c2e0d;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* Diary Ribbon */
+.diary-ribbon {
+  position: absolute;
+  top: 0;
+  right: 100px;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    #d4a373,
+    #f8e5d6 20%,
+    #f8e5d6 80%,
+    #d4a373
+  );
+  transform: rotate(2deg);
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .memory-wall {
+    padding: 3rem 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2.8rem;
+  }
+  
+  .subtitle {
+    font-size: 1.4rem;
+  }
+  
+  .photo-stack-container {
+    width: 280px;
+    height: 400px;
+  }
+  
+  .polaroid-img {
+    height: 240px;
+  }
+  
+  .final-message h2 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .photo-stack-container {
+    width: 250px;
+    height: 360px;
+  }
+  
+  .polaroid-img {
+    height: 200px;
+  }
+  
+  .caption h3 {
+    font-size: 1.6rem;
+  }
+  
+  .final-message h2 {
+    font-size: 2.5rem;
+  }
+}

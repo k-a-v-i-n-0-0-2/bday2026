@@ -1,0 +1,177 @@
+.memories-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 2rem;
+    font-family: 'Cormorant Garamond', serif;
+    overflow: hidden;
+    background-color: #f5f0e6;
+    background-image: 
+        url('https://www.transparenttextures.com/patterns/cream-paper.png'),
+        linear-gradient(to bottom, rgba(245, 240, 230, 0.8), rgba(245, 240, 230, 0.9));
+    box-shadow: inset 0 0 100px rgba(139, 69, 19, 0.1);
+}
+
+/* Vintage paper overlay */
+.memories-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+    opacity: 0.4;
+    z-index: 0;
+}
+
+/* Diary header styling */
+.memories-page h1 {
+    text-align: center;
+    margin: 2rem auto;
+    color: #5c2e0d;
+    font-size: 3.5rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+    font-family: 'Dancing Script', cursive;
+    text-shadow: 2px 2px 3px rgba(139, 69, 19, 0.2);
+    letter-spacing: 1px;
+}
+
+.memories-page h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8b4513, transparent);
+    border-radius: 3px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #a67c52;
+    margin-bottom: 3rem;
+    font-size: 1.4rem;
+    font-weight: 1000;
+    font-family: 'Nothing You Could Do', cursive;
+    position: relative;
+    z-index: 2;
+}
+
+/* Vintage timeline styles */
+.timeline-container {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.timeline-item {
+    position: relative;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(139, 69, 19, 0.1);
+    z-index: 2;
+    background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 80px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateX(-50%);
+    opacity: 0.7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-content {
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid rgba(139, 69, 19, 0.2);
+}
+
+.timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(139, 69, 19, 0.1);
+    pointer-events: none;
+}
+
+/* Photo corners */
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-top: 3px solid #8b4513;
+    border-left: 3px solid #8b4513;
+}
+
+.timeline-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-bottom: 3px solid #8b4513;
+    border-right: 3px solid #8b4513;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .memories-page {
+        padding: 1.5rem;
+    }
+    
+    .memories-page h1 {
+        font-size: 2.8rem;
+        margin: 1.5rem auto;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .timeline-item {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .memories-page h1 {
+        font-size: 2.2rem;
+        padding: 0 10px;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .timeline-content {
+        padding: 1rem;
+    }
+}
+
+/* Add these font imports */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Dancing+Script:wght@400;700&family=Nothing+You+Could+Do&display=swap');

@@ -1,0 +1,19 @@
+.gallery-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .mySwiper {
+    width: 100%;
+    height: 400px;
+  }
+  
+  .mySwiper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
