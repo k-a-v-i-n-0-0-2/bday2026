@@ -170,52 +170,25 @@ app.get(['/netflix.html/upload', '/netflix-upload'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'upload.html'));
 });
 
-function streamVideoFile(req, res, videoPath) {
-    if (!fs.existsSync(videoPath)) {
-        return res.status(404).send('Video not found.');
-    }
-
-    const stat = fs.statSync(videoPath);
-    const fileSize = stat.size;
-    const range = req.headers.range;
-
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const CHUNK_SIZE = 10 ** 6; // 1MB
-        const end = parts[1] 
-            ? parseInt(parts[1], 10)
-            : Math.min(start + CHUNK_SIZE, fileSize - 1);
-
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(videoPath, { start, end });
-        const head = {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/mp4',
-        };
-
-        res.writeHead(206, head);
-        file.pipe(res);
-    } else {
-        const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/mp4',
-        };
-        res.writeHead(200, head);
-        fs.createReadStream(videoPath).pipe(res);
-    }
-}
 
 // Route for background video
 app.get('/stream-video', (req, res) => {
-    streamVideoFile(req, res, path.join(__dirname, '..', 'cinematic-landing', 'assets', 'love.mp4'));
+    const videoPath = path.join(__dirname, '..', 'cinematic-landing', 'assets', 'love.mp4');
+    if (fs.existsSync(videoPath)) {
+        res.sendFile(videoPath);
+    } else {
+        res.status(404).send('Video not found.');
+    }
 });
 
 // Route for Netflix intro animation
 app.get('/stream-intro', (req, res) => {
-    streamVideoFile(req, res, path.join(__dirname, '..', 'cinematic-landing', 'assets', 'Netflix New Logo Animation 2019.mp4'));
+    const videoPath = path.join(__dirname, '..', 'cinematic-landing', 'assets', 'Netflix New Logo Animation 2019.mp4');
+    if (fs.existsSync(videoPath)) {
+        res.sendFile(videoPath);
+    } else {
+        res.status(404).send('Video not found.');
+    }
 });
 
 const multer = require('multer');
@@ -588,5 +561,10 @@ app.post('/api/update-drive', uploadMiddleware.single('file'), async (req, res) 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Advanced Node.js server running on http://localhost:${PORT}`);
+    console.log(`Advanced Node.js server running on port ${PORT}`);
+    console.log(`Checking assets...`);
+    const lovePath = path.join(__dirname, '..', 'cinematic-landing', 'assets', 'love.mp4');
+    const introPath = path.join(__dirname, '..', 'cinematic-landing', 'assets', 'Netflix New Logo Animation 2019.mp4');
+    console.log(`- love.mp4: ${fs.existsSync(lovePath) ? 'EXISTS' : 'MISSING'} (${lovePath})`);
+    console.log(`- intro.mp4: ${fs.existsSync(introPath) ? 'EXISTS' : 'MISSING'} (${introPath})`);
 });
