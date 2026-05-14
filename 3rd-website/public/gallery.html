@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priya's Gallery - 20th Birthday</title>
+    <!-- Modern stylish fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="gallery.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="gallery-body">
+    <nav class="navbar">
+        <div class="logo">Priya's 20th</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="message.html">Message</a>
+            <a href="netflix.html">PriyaFlix</a>
+        </div>
+    </nav>
+
+    <div class="video-container">
+        <!-- Reusing the background video style from index, maybe blurry -->
+        <video id="bg-video" src="/stream-video" muted loop autoplay playsinline preload="auto"></video>
+        <div class="video-overlay gallery-overlay"></div>
+    </div>
+
+    <!-- Gallery Section -->
+    <main class="gallery-container">
+        <!-- The upload form is now integrated into a card in the grid -->
+        <div class="photo-grid" id="photoGrid">
+            <!-- Photos + Add Card will be here -->
+            <div class="loading-spinner"><i class="fas fa-circle-notch fa-spin"></i> Loading memories...</div>
+        </div>
+        <!-- Hidden file input for the 'Add Card' -->
+        <input type="file" id="gridFileInput" accept="image/*,video/*" style="display: none;">
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="photoModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <div id="modalMediaContainer"></div>
+        </div>
+    </div>
+
+    <script src="gallery.js"></script>
+</body>
+</html>

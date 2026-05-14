@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Birthday - 3D Scroll Journey</title>
+    <!-- Modern stylish fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Priya's 20th</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="message.html">Message</a>
+            <a href="netflix.html">PriyaFlix</a>
+        </div>
+    </nav>
+
+    <!-- Video Element (Acts as our 3D background animation) -->
+    <div class="video-container">
+        <!-- We point to the love.mp4 asset. Using playsinline and muted allows programmatic control without user interaction -->
+        <video id="bg-video" src="/stream-video" muted playsinline preload="auto"></video>
+        <!-- A subtle overlay to make text pop and give a cinematic feel -->
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Main scrollable tracking area -->
+    <main class="scroll-track">
+        
+        <!-- Section 1: Intro -->
+        <section class="step" id="step-1">
+            <div class="content-block right-align">
+                <h2 class="sub-heading">A Special Day</h2>
+                <h1 class="main-heading">Happy 20th <br>Birthday</h1>
+                <p class="description">Scroll down to explore</p>
+                <div class="scroll-indicator"></div>
+            </div>
+        </section>
+
+        <!-- Section 2: Journey -->
+        <section class="step" id="step-2">
+            <div class="content-block right-align">
+                <h1 class="main-heading glassy-text">20 Years<br>of Magic</h1>
+                <p class="description">Every moment is a frame in our beautiful story.</p>
+            </div>
+        </section>
+
+        <!-- Section 3: More Depth -->
+        <section class="step" id="step-3">
+            <div class="content-block left-align">
+                <h1 class="main-heading glow-text">A 3D World</h1>
+                <p class="description">As you scroll, time moves with you.</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Finale -->
+        <section class="step" id="step-4">
+            <div class="content-block center-align">
+                <h2 class="sub-heading">To Infinity</h2>
+                <h1 class="main-heading">I Love You</h1>
+                <p class="description">Forever and Always.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

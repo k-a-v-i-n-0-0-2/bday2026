@@ -1,0 +1,8 @@
+node_modules/
+uploads/
+priyaflix-deployment.zip
+.DS_Store
+*.log
+credentials.json
+token.json
+.env

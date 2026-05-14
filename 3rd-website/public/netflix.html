@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriyaFlix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Netflix Clone Variables */
+        :root {
+            --netflix-red: #E50914;
+            --netflix-bg: #141414;
+            --netflix-text: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--netflix-bg);
+            color: var(--netflix-text);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Netflix Header */
+        .nx-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 4%;
+            z-index: 1000;
+        }
+
+        .nx-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--netflix-red);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-right: 3rem;
+        }
+
+        .nx-nav a {
+            color: #e5e5e5;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nx-nav a:hover { color: #fff; }
+
+        /* Hero billboard */
+        .nx-billboard {
+            position: relative;
+            height: 80vh;
+            background-image: url('/kavin_priya/love/1710057843358.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .nx-billboard-vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, transparent 50%, #141414 100%),
+                        linear-gradient(90deg, rgba(20,20,20,0.8) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .nx-billboard-info {
+            position: absolute;
+            top: 40%;
+            left: 4%;
+            max-width: 500px;
+            z-index: 2;
+        }
+
+        .nx-billboard-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nx-billboard-desc {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .nx-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nx-btn-play {
+            background-color: #fff;
+            color: #000;
+            margin-right: 1rem;
+        }
+        .nx-btn-play:hover { background-color: rgba(255,255,255,0.75); }
+
+        .nx-btn-more {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: #fff;
+        }
+        .nx-btn-more:hover { background-color: rgba(109, 109, 110, 0.4); }
+
+        /* Row Grid */
+        .nx-row {
+            margin: 3vw 0;
+            padding: 0 4%;
+        }
+
+        .nx-row-header {
+            font-size: 1.4vw;
+            font-weight: 600;
+            margin-bottom: 0.8em;
+            color: #e5e5e5;
+        }
+
+        .nx-slider {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 10px 0 20px 0;
+        }
+
+        .nx-card {
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: #141414;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            height: auto; /* Let content determine height */
+            min-height: 240px;
+        }
+
+        .nx-card-media {
+            width: 100%;
+            height: 160px; /* Fixed height for the media part */
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px 8px 0 0;
+            flex-shrink: 0;
+        }
+
+        .nx-card-media img, .nx-card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .nx-card-caption {
+            padding: 12px 4px;
+            background: transparent;
+            color: #fff;
+            width: 100%;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .nx-card-caption .caption-title {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: #fff;
+            margin-bottom: 4px;
+            white-space: normal; /* Allow wrap for long captions like billboard */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .nx-card-caption .caption-type {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .nx-card:hover {
+            transform: translateY(-5px);
+            z-index: 20;
+        }
+
+        .nx-card:hover .nx-card-caption .caption-title {
+            color: var(--netflix-red);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nx-billboard { height: 50vh; }
+            .nx-billboard-title { font-size: 2.5rem; }
+            .nx-billboard-desc { font-size: 1rem; }
+            .nx-slider { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+            .nx-card { min-height: 200px; }
+            .nx-card-media { height: 120px; }
+            .profile-card div { width: 25vw !important; height: 25vw !important; }
+            .profile-card span { font-size: 4vw !important; }
+            .nx-logo { font-size: 1.5rem; }
+            .nx-nav a { margin-right: 0.8rem; font-size: 0.8rem; }
+            .nx-billboard-info { width: 90%; }
+            .nx-row-header { font-size: 4vw; }
+        }
+
+        /* Mobile specific Card spacing */
+        @media (max-width: 480px) {
+            .nx-row { margin: 5vw 0; padding: 0 3%; }
+            .nx-slider { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .nx-card { min-height: 180px; }
+            .nx-card-media { height: 100px; }
+            .nx-row-header { font-size: 4.5vw; }
+            .nx-card-caption { padding: 8px 2px; }
+            .nx-card-caption .caption-title { font-size: 0.85rem; }
+        }
+
+        /* Edit Mode Styles */
+        .nx-card .card-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .nx-card:hover .card-actions {
+            display: flex;
+        }
+
+        .nx-card .delete-btn,
+        .nx-card .edit-btn {
+            background: rgba(0,0,0,0.75);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .nx-card .edit-btn:hover {
+            background: rgba(229, 9, 20, 0.9);
+            transform: scale(1.15);
+        }
+
+        .nx-card .delete-btn:hover {
+            background: rgba(220, 38, 38, 0.9);
+            transform: scale(1.15);
+        }
+
+        .nx-card.add-card {
+            border: 2px dashed #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            color: #555;
+            transition: all 0.3s;
+            height: 160px; /* Matches the media height of cards */
+            border-radius: 8px;
+        }
+
+        .nx-card.add-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #888;
+            color: #fff;
+        }
+
+        .nx-card.add-card i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .nx-card.add-card span {
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .uploading-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .upload-choice-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .upload-choice-btn:hover {
+            background: var(--netflix-red);
+            border-color: var(--netflix-red);
+            transform: scale(1.1);
+        }
+
+        /* ===== Edit Modal ===== */
+        .edit-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .edit-modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .edit-modal {
+            background: linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 520px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            transform: translateY(20px) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .edit-modal-overlay.active .edit-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .edit-modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: #aaa;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .edit-modal-close:hover {
+            background: var(--netflix-red);
+            color: #fff;
+        }
+
+        .edit-modal h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.8rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edit-modal h2 i {
+            color: var(--netflix-red);
+        }
+
+        .edit-modal .preview-box {
+            width: 100%;
+            height: 180px;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .edit-modal .preview-box img,
+        .edit-modal .preview-box video {
+            width: 100%; height: 100%; object-fit: contain;
+        }
+
+        .edit-modal .preview-replace-btn {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            background: rgba(229, 9, 20, 0.85);
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .edit-modal .preview-replace-btn:hover {
+            background: #f40612;
+            transform: translateY(-1px);
+        }
+
+        .edit-modal .field-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .edit-modal .field-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .edit-modal .field-group input,
+        .edit-modal .field-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .edit-modal .field-group input:focus,
+        .edit-modal .field-group select:focus {
+            border-color: var(--netflix-red);
+            background: rgba(229, 9, 20, 0.06);
+        }
+
+        .edit-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.8rem;
+        }
+
+        .edit-modal-actions button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-modal-actions .btn-save {
+            background: var(--netflix-red);
+            color: #fff;
+        }
+
+        .edit-modal-actions .btn-save:hover {
+            background: #f40612;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        .edit-modal-actions .btn-save:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .edit-modal-actions .btn-cancel {
+            background: rgba(255,255,255,0.08);
+            color: #ccc;
+        }
+
+        .edit-modal-actions .btn-cancel:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .edit-modal .status-text {
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            min-height: 1.2em;
+            color: #888;
+        }
+
+        .edit-modal .status-text.success { color: #4caf50; }
+        .edit-modal .status-text.error { color: #f44336; }
+
+    </style>
+</head>
+<body>
+    
+    <!-- Intro Video Container -->
+    <div id="intro-container" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease;">
+        <video id="intro-video" src="/stream-intro" autoplay playsinline style="width: 100%; height: 100%; object-fit: contain;"></video>
+        <!-- Fallback play button if autoplay is blocked -->
+        <button id="start-intro-btn" style="position: absolute; display: none; padding: 15px 30px; font-size: 1.2rem; background: var(--netflix-red); color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Enter PriyaFlix</button>
+    </div>
+
+    <!-- Profile Selection Container -->
+    <div id="profile-selection" style="display: none; opacity: 0; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--netflix-bg); z-index: 9998; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1s ease;">
+        <h1 style="font-size: 3vw; margin-bottom: 2rem; color: #fff; font-weight: 400;">Who's watching?</h1>
+        <div style="display: flex; gap: 2vw;">
+            <div class="profile-card" onclick="selectProfile('Love')" style="text-align: center; cursor: pointer;">
+                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
+                    <img src="/kavin_priya/love/1710057843383.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Love</span>
+            </div>
+            <div class="profile-card" onclick="selectProfile('Fun')" style="text-align: center; cursor: pointer;">
+                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
+                    <img src="/kavin_priya/fun/IMG_20240430_160925.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Fun</span>
+            </div>
+            <div class="profile-card" onclick="selectProfile('Intimacy')" style="text-align: center; cursor: pointer;">
+                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
+                    <img src="/kavin_priya/intimacy/1710057603933.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Intimacy</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-content" style="opacity: 0; pointer-events: none; transition: opacity 2s ease;">
+    <!-- Navbar -->
+    <header class="nx-header">
+        <a href="index.html" class="nx-logo">PriyaFlix</a>
+        <nav class="nx-nav">
+            <a href="index.html">Home</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="message.html">Message</a>
+            <a href="/netflix-upload" style="color: var(--netflix-red); font-weight: 600;">Upload</a>
+        </nav>
+    </header>
+
+    <!-- Billboard -->
+    <div class="nx-billboard">
+        <video autoplay muted loop playsinline class="nx-billboard-vid" style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
+            <source src="/kavin_priya/fun/VID_20250218_113921247.mp4" type="video/mp4">
+        </video>
+        <div class="nx-billboard-vignette"></div>
+        <div class="nx-billboard-info">
+            <h1 class="nx-billboard-title">Sweet 20</h1>
+            <p class="nx-billboard-desc">The blockbuster story of an incredible girl stepping into her 20s. Witness the magic, the laughs, and everything in between.</p>
+            <button class="nx-btn nx-btn-play">▶ Play Story</button>
+            <button class="nx-btn nx-btn-more">ⓘ More Info</button>
+        </div>
+    </div>
+
+    <!-- Rows Container -->
+    <div id="rows-container">
+        <!-- Rows will be dynamically loaded here -->
+    </div>
+    </div> <!-- end main-content -->
+
+    <!-- Edit Modal -->
+    <div class="edit-modal-overlay" id="edit-modal-overlay">
+        <div class="edit-modal">
+            <button class="edit-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-pen-to-square"></i> Edit Media</h2>
+
+            <div class="preview-box" id="edit-preview-box">
+                <img id="edit-preview-img" style="display:none;">
+                <video id="edit-preview-vid" muted style="display:none;"></video>
+                <button class="preview-replace-btn" onclick="document.getElementById('edit-replace-input').click()">
+                    <i class="fas fa-arrows-rotate"></i> Replace
+                </button>
+            </div>
+            <input type="file" id="edit-replace-input" style="display:none;" accept="image/*,video/*">
+
+            <div class="field-group">
+                <label>Filename</label>
+                <input type="text" id="edit-filename" placeholder="Enter file name">
+            </div>
+
+            <div class="field-group">
+                <label>Caption / Title</label>
+                <input type="text" id="edit-caption" placeholder="Enter custom title">
+            </div>
+
+            <div class="field-group" id="edit-category-group">
+                <label>Category</label>
+                <select id="edit-category">
+                    <option value="love">❤️ Love</option>
+                    <option value="fun">🎉 Fun</option>
+                    <option value="intimacy">💜 Intimacy</option>
+                </select>
+            </div>
+
+            <div class="field-group" id="edit-source-badge" style="display:none;">
+                <label>Source</label>
+                <div style="padding: 0.6rem 1rem; background: rgba(255,255,255,0.06); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-cloud" style="color: #4285F4;"></i> Google Drive
+                </div>
+            </div>
+
+            <div class="edit-modal-actions">
+                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-save" id="edit-save-btn" onclick="saveEdit()">Save Changes</button>
+            </div>
+            <div class="status-text" id="edit-status"></div>
+        </div>
+    </div>
+
+    <!-- Hidden File Input for Uploads -->
+    <input type="file" id="nx-file-input" style="display: none;" accept="image/*,video/*">
+
+    <script>
+        // Common variables
+        let currentActiveCategory = 'love'; 
+        let allMediaData = null;
+        let driveMediaData = null;
+
+        const introVideo = document.getElementById('intro-video');
+        const introContainer = document.getElementById('intro-container');
+        const startBtn = document.getElementById('start-intro-btn');
+        const mainContent = document.getElementById('main-content');
+        const profileSelection = document.getElementById('profile-selection');
+
+        // Function to transition out intro and show profile selection
+        function finishIntro() {
+            introContainer.style.opacity = '0';
+            setTimeout(() => {
+                introContainer.style.display = 'none';
+                profileSelection.style.display = 'flex';
+                void profileSelection.offsetWidth; 
+                profileSelection.style.opacity = '1';
+                
+                introVideo.pause();
+                introVideo.removeAttribute('src');
+                introVideo.load();
+            }, 1000);
+        }
+
+        // Function to select profile and show main content
+        function selectProfile(profileName) {
+            const category = profileName.toLowerCase();
+            profileSelection.style.opacity = '0';
+            setTimeout(() => {
+                profileSelection.style.display = 'none';
+                renderContentForCategory(category);
+                currentActiveCategory = category;
+                mainContent.style.opacity = '1';
+                mainContent.style.pointerEvents = 'auto';
+            }, 1000);
+        }
+
+        // Handle successful autoplay end
+        introVideo.addEventListener('ended', finishIntro);
+
+        // Fetch dynamic content
+        async function fetchAllMedia() {
+            try {
+                const response = await fetch('/api/kavin_priya');
+                allMediaData = await response.json();
+                
+                // Also fetch Drive media
+                const driveResponse = await fetch('/api/photos');
+                driveMediaData = await driveResponse.json();
+            } catch (err) {
+                console.error('Failed to load media:', err);
+            }
+        }
+
+        function renderContentForCategory(selectedCategory) {
+            if (!allMediaData) return;
+
+            const container = document.getElementById('rows-container');
+            container.innerHTML = '';
+
+            const billboardVid = document.querySelector('.nx-billboard-vid source');
+            const billboardVidElement = document.querySelector('.nx-billboard-vid');
+            const billboardTitle = document.querySelector('.nx-billboard-title');
+            const billboardDesc = document.querySelector('.nx-billboard-desc');
+            const billboardElement = document.querySelector('.nx-billboard');
+
+            // Map categories to display titles and descriptions
+            const categoryMeta = {
+                love: {
+                    title: "Everything About Love",
+                    desc: "A collection of our most romantic moments, captured in time forever."
+                },
+                fun: {
+                    title: "Fun Memories Together",
+                    desc: "The laughs, the adventures, and the pure joy of being us."
+                },
+                intimacy: {
+                    title: "Intimate Chapters",
+                    desc: "Close moments and quiet reflections that define our bond."
+                }
+            };
+
+            let excludedFile = null;
+
+            // Update Billboard based on category
+            if (selectedCategory && allMediaData[selectedCategory]) {
+                const categoryFiles = allMediaData[selectedCategory];
+                if (categoryFiles.length > 0) {
+                    const randomMedia = categoryFiles[Math.floor(Math.random() * categoryFiles.length)];
+                    excludedFile = randomMedia.path;
+                    
+                    if (excludedFile.toLowerCase().endsWith('.mp4') || excludedFile.toLowerCase().endsWith('.mov')) {
+                        billboardVidElement.style.display = 'block';
+                        billboardVid.src = excludedFile;
+                        billboardVidElement.load();
+                        billboardElement.style.backgroundImage = 'none';
+                    } else {
+                        billboardVidElement.style.display = 'none';
+                        billboardElement.style.backgroundImage = `url('${excludedFile}')`;
+                    }
+
+                    billboardTitle.textContent = categoryMeta[selectedCategory].title;
+                    billboardDesc.textContent = categoryMeta[selectedCategory].desc;
+
+                    // STRICT EXCLUSIVITY: Only show the selected category's row
+                    // Also filter out the one already shown in the billboard
+                    const remainingFiles = categoryFiles.filter(fileObj => fileObj.path !== excludedFile);
+                    renderRow(selectedCategory, remainingFiles, container, categoryMeta);
+                } else {
+                    // Even if empty, show the row so they can add
+                    renderRow(selectedCategory, [], container, categoryMeta);
+                }
+            } else {
+                // Show everything (Home mode)
+                for (const [category, files] of Object.entries(allMediaData)) {
+                    renderRow(category, files, container, categoryMeta);
+                }
+                
+                // Add Cloud Row
+                if (driveMediaData && driveMediaData.length > 0) {
+                    renderCloudRow(driveMediaData, container);
+                }
+            }
+        }
+
+        function renderCloudRow(photos, container) {
+            const row = document.createElement('div');
+            row.className = 'nx-row';
+            
+            const header = document.createElement('h2');
+            header.className = 'nx-row-header';
+            header.textContent = "Google Drive Memories";
+            
+            const slider = document.createElement('div');
+            slider.className = 'nx-slider';
+
+            photos.forEach(photo => {
+                const card = document.createElement('div');
+                card.className = 'nx-card';
+                const viewUrl = `/api/image/${photo.id}`;
+
+                // Media container
+                const mediaBox = document.createElement('div');
+                mediaBox.className = 'nx-card-media';
+                
+                if (photo.mimeType && photo.mimeType.startsWith('video/')) {
+                    const vid = document.createElement('video');
+                    vid.src = photo.webContentLink || '';
+                    vid.muted = true;
+                    mediaBox.appendChild(vid);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = viewUrl;
+                    mediaBox.appendChild(img);
+                }
+
+                // Card Action Buttons Container
+                const actions = document.createElement('div');
+                actions.className = 'card-actions';
+
+                // Edit Button for Drive
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-btn';
+                editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+                editBtn.title = 'Edit this media';
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openEditModal(photo, 'drive');
+                };
+                actions.appendChild(editBtn);
+
+                // Delete Button for Drive
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteBtn.title = 'Delete from Google Drive';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (confirm('Delete from Google Drive?')) {
+                        handleDriveDelete(photo.id, card);
+                    }
+                };
+                actions.appendChild(deleteBtn);
+
+                mediaBox.appendChild(actions);
+                card.appendChild(mediaBox);
+
+                // Caption
+                const caption = document.createElement('div');
+                caption.className = 'nx-card-caption';
+                const isVideo = photo.mimeType && photo.mimeType.startsWith('video/');
+                const displayTitle = photo.caption || photo.name || 'Untitled';
+                caption.innerHTML = `<div class="caption-title">${displayTitle}</div><div class="caption-type">${isVideo ? '🎬 Video' : '📷 Photo'} · ☁️ Drive</div>`;
+                card.appendChild(caption);
+
+                slider.appendChild(card);
+            });
+
+            row.appendChild(header);
+            row.appendChild(slider);
+            container.appendChild(row);
+        }
+
+        async function handleDriveDelete(fileId, element) {
+            const response = await fetch('/api/delete-photo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileId })
+            });
+            const result = await response.json();
+            if (result.success) {
+                element.style.transform = 'scale(0)';
+                setTimeout(() => element.remove(), 300);
+            }
+        }
+
+        function renderRow(category, files, container, categoryMeta) {
+            const row = document.createElement('div');
+            row.className = 'nx-row';
+            
+            const header = document.createElement('h2');
+            header.className = 'nx-row-header';
+            header.textContent = categoryMeta[category]?.title || category.toUpperCase();
+            
+            const slider = document.createElement('div');
+            slider.className = 'nx-slider';
+
+            files.forEach(fileObj => {
+                const file = fileObj.path;
+                const captionText = fileObj.caption;
+                
+                const card = document.createElement('div');
+                card.className = 'nx-card';
+
+                // Media container
+                const mediaBox = document.createElement('div');
+                mediaBox.className = 'nx-card-media';
+                
+                if (file.toLowerCase().endsWith('.mp4') || file.toLowerCase().endsWith('.mov')) {
+                    const vid = document.createElement('video');
+                    vid.src = file;
+                    vid.muted = true;
+                    mediaBox.appendChild(vid);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = file;
+                    mediaBox.appendChild(img);
+                }
+
+                // Card Action Buttons Container
+                const actions = document.createElement('div');
+                actions.className = 'card-actions';
+
+                // Edit Button
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-btn';
+                editBtn.innerHTML = '<i class="fas fa-pen"></i>';
+                editBtn.title = 'Edit this media';
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openEditModal(fileObj, category);
+                };
+                actions.appendChild(editBtn);
+
+                // Delete Button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteBtn.title = 'Delete this media';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (confirm('Delete this memory?')) {
+                        deleteMedia(file, card);
+                    }
+                };
+                actions.appendChild(deleteBtn);
+
+                mediaBox.appendChild(actions);
+                card.appendChild(mediaBox);
+
+                // Caption
+                const caption = document.createElement('div');
+                caption.className = 'nx-card-caption';
+                const filename = file.split('/').pop();
+                const ext = filename.split('.').pop().toUpperCase();
+                const isVideo = ['MP4', 'MOV'].includes(ext);
+                const displayTitle = captionText || filename;
+                caption.innerHTML = `<div class="caption-title">${displayTitle}</div><div class="caption-type">${isVideo ? '🎬 Video' : '📷 Photo'}</div>`;
+                card.appendChild(caption);
+
+                slider.appendChild(card);
+            });
+
+
+            // Append "Add Memory" Card
+            const addCard = document.createElement('div');
+            addCard.className = 'nx-card add-card';
+            addCard.id = `add-card-${category}`;
+            addCard.innerHTML = `
+                <div style="display: flex; gap: 15px; margin-bottom: 5px;">
+                    <button class="upload-choice-btn" title="Upload to Local folder" onclick="triggerUpload('${category}', 'local')">📁</button>
+                    <button class="upload-choice-btn" title="Upload to Google Drive" onclick="triggerUpload('${category}', 'drive')">☁️</button>
+                </div>
+                <span>Add to ${category}</span>
+                <div class="upload-progress" style="font-size: 0.7rem; margin-top: 5px;"></div>
+            `;
+            // Removed direct onclick, using triggerUpload instead
+            slider.appendChild(addCard);
+
+            row.appendChild(header);
+            row.appendChild(slider);
+            container.appendChild(row);
+        }
+
+        let uploadType = 'local';
+
+        function triggerUpload(category, type) {
+            currentActiveCategory = category;
+            uploadType = type;
+            document.getElementById('nx-file-input').click();
+        }
+
+        // Logic for uploading
+        const fileInput = document.getElementById('nx-file-input');
+        fileInput.addEventListener('change', async () => {
+            if (fileInput.files.length === 0) return;
+            
+            const file = fileInput.files[0];
+            const category = currentActiveCategory;
+            const addCard = document.getElementById(`add-card-${category}`);
+            const progress = addCard.querySelector('.upload-progress');
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('category', category);
+
+            progress.textContent = 'Uploading...';
+            addCard.style.pointerEvents = 'none';
+            addCard.style.opacity = '0.7';
+
+            try {
+                const endpoint = uploadType === 'local' ? '/api/upload-priyaflix' : '/api/upload';
+                // For Drive upload, the server expects different field names
+                if (uploadType === 'drive') {
+                    formData.delete('file');
+                    formData.append('photo', file); // gallery uses 'photo'
+                }
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    progress.textContent = 'Uploaded to ' + (uploadType === 'local' ? 'Local' : 'Drive');
+                    // Refresh content
+                    await fetchAllMedia();
+                    renderContentForCategory(category);
+                } else {
+                    alert('Upload failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Upload error occurred.');
+            } finally {
+                fileInput.value = ''; // Reset input
+                addCard.style.pointerEvents = 'auto';
+                addCard.style.opacity = '1';
+                setTimeout(() => { if(progress) progress.textContent = ''; }, 2000);
+            }
+        });
+
+        // Logic for deleting
+        async function deleteMedia(filePath, element) {
+            try {
+                const response = await fetch('/api/delete-priyaflix', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    element.style.transform = 'scale(0)';
+                    setTimeout(() => element.remove(), 300);
+                } else {
+                    alert('Delete failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Delete error occurred.');
+            }
+        }
+
+        // ===== Edit Modal Logic =====
+        let editingFilePath = null;   // For local: file path string. For drive: photo object.
+        let editingCategory = null;   // 'love'/'fun'/'intimacy' for local, 'drive' for Drive
+        let editReplacementFile = null;
+        let editingMode = 'local';    // 'local' or 'drive'
+
+        const editOverlay = document.getElementById('edit-modal-overlay');
+        const editFilenameInput = document.getElementById('edit-filename');
+        const editCaptionInput = document.getElementById('edit-caption');
+        const editCategorySelect = document.getElementById('edit-category');
+        const editCategoryGroup = document.getElementById('edit-category-group');
+        const editSourceBadge = document.getElementById('edit-source-badge');
+        const editPreviewImg = document.getElementById('edit-preview-img');
+        const editPreviewVid = document.getElementById('edit-preview-vid');
+        const editStatus = document.getElementById('edit-status');
+        const editSaveBtn = document.getElementById('edit-save-btn');
+        const editReplaceInput = document.getElementById('edit-replace-input');
+
+        // openEditModal accepts either a filePath string (local) or a photo object (drive)
+        function openEditModal(fileOrPhoto, category) {
+            editReplacementFile = null;
+            editReplaceInput.value = '';
+            editStatus.textContent = '';
+            editStatus.className = 'status-text';
+            editSaveBtn.disabled = false;
+
+            if (category === 'drive') {
+                // Drive mode: fileOrPhoto is a Drive photo object { id, name, mimeType, caption, ... }
+                editingMode = 'drive';
+                editingFilePath = fileOrPhoto; // store the whole photo object
+                editingCategory = 'drive';
+
+                editFilenameInput.value = fileOrPhoto.name || '';
+                editCaptionInput.value = fileOrPhoto.caption || '';
+                editCategoryGroup.style.display = 'none';
+                editSourceBadge.style.display = 'block';
+
+                // Show preview
+                editPreviewImg.style.display = 'none';
+                editPreviewVid.style.display = 'none';
+                const viewUrl = `/api/image/${fileOrPhoto.id}`;
+                if (fileOrPhoto.mimeType && fileOrPhoto.mimeType.startsWith('video/')) {
+                    editPreviewVid.src = fileOrPhoto.webContentLink || viewUrl;
+                    editPreviewVid.style.display = 'block';
+                } else {
+                    editPreviewImg.src = viewUrl;
+                    editPreviewImg.style.display = 'block';
+                }
+            } else {
+                // Local mode: fileOrPhoto is an object { path, caption }
+                editingMode = 'local';
+                editingFilePath = fileOrPhoto.path;
+                editingCategory = category;
+
+                const filename = fileOrPhoto.path.split('/').pop();
+                editFilenameInput.value = filename;
+                editCaptionInput.value = fileOrPhoto.caption || '';
+                editCategorySelect.value = category;
+                editCategoryGroup.style.display = 'block';
+                editSourceBadge.style.display = 'none';
+
+                // Show preview
+                editPreviewImg.style.display = 'none';
+                editPreviewVid.style.display = 'none';
+                if (fileOrPhoto.path.toLowerCase().endsWith('.mp4') || fileOrPhoto.path.toLowerCase().endsWith('.mov')) {
+                    editPreviewVid.src = fileOrPhoto.path;
+                    editPreviewVid.style.display = 'block';
+                } else {
+                    editPreviewImg.src = fileOrPhoto.path;
+                    editPreviewImg.style.display = 'block';
+                }
+            }
+
+            // Show modal with animation
+            editOverlay.style.display = 'flex';
+            requestAnimationFrame(() => editOverlay.classList.add('active'));
+        }
+
+        function closeEditModal() {
+            editOverlay.classList.remove('active');
+            setTimeout(() => {
+                editOverlay.style.display = 'none';
+                editPreviewVid.pause();
+                editPreviewVid.src = '';
+            }, 350);
+        }
+
+        // Close on overlay click
+        editOverlay.addEventListener('click', (e) => {
+            if (e.target === editOverlay) closeEditModal();
+        });
+
+        // Handle file replacement preview
+        editReplaceInput.addEventListener('change', () => {
+            if (editReplaceInput.files.length === 0) return;
+            editReplacementFile = editReplaceInput.files[0];
+
+            editPreviewImg.style.display = 'none';
+            editPreviewVid.style.display = 'none';
+
+            if (editReplacementFile.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    editPreviewImg.src = e.target.result;
+                    editPreviewImg.style.display = 'block';
+                };
+                reader.readAsDataURL(editReplacementFile);
+            } else if (editReplacementFile.type.startsWith('video/')) {
+                editPreviewVid.src = URL.createObjectURL(editReplacementFile);
+                editPreviewVid.style.display = 'block';
+            }
+
+            editStatus.textContent = 'New file selected: ' + editReplacementFile.name;
+            editStatus.className = 'status-text';
+        });
+
+        async function saveEdit() {
+            const newName = editFilenameInput.value.trim();
+            const caption = editCaptionInput.value.trim();
+
+            if (!newName) {
+                editStatus.textContent = 'Filename cannot be empty.';
+                editStatus.className = 'status-text error';
+                return;
+            }
+
+            editSaveBtn.disabled = true;
+            editStatus.textContent = 'Saving...';
+            editStatus.className = 'status-text';
+
+            try {
+                if (editingMode === 'drive') {
+                    // ---- Google Drive update ----
+                    const formData = new FormData();
+                    formData.append('fileId', editingFilePath.id);
+                    formData.append('newName', newName);
+                    formData.append('caption', caption);
+
+                    if (editReplacementFile) {
+                        formData.append('file', editReplacementFile);
+                    }
+
+                    const response = await fetch('/api/update-drive', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        editStatus.textContent = '✓ Saved to Google Drive!';
+                        editStatus.className = 'status-text success';
+                        await fetchAllMedia();
+                        renderContentForCategory(currentActiveCategory);
+                        setTimeout(() => closeEditModal(), 800);
+                    } else {
+                        editStatus.textContent = 'Error: ' + result.error;
+                        editStatus.className = 'status-text error';
+                        editSaveBtn.disabled = false;
+                    }
+                } else {
+                    // ---- Local update ----
+                    const newCategory = editCategorySelect.value;
+                    const formData = new FormData();
+                    formData.append('oldPath', editingFilePath);
+                    formData.append('newName', newName);
+                    formData.append('newCategory', newCategory);
+                    formData.append('caption', caption);
+
+                    if (editReplacementFile) {
+                        formData.append('file', editReplacementFile);
+                    }
+
+                    const response = await fetch('/api/update-media-priyaflix', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        editStatus.textContent = '✓ Saved successfully!';
+                        editStatus.className = 'status-text success';
+                        await fetchAllMedia();
+                        renderContentForCategory(currentActiveCategory);
+                        setTimeout(() => closeEditModal(), 800);
+                    } else {
+                        editStatus.textContent = 'Error: ' + result.error;
+                        editStatus.className = 'status-text error';
+                        editSaveBtn.disabled = false;
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                editStatus.textContent = 'Connection error. Try again.';
+                editStatus.className = 'status-text error';
+                editSaveBtn.disabled = false;
+            }
+        }
+
+        fetchAllMedia();
+
+        // Check if autoplay was blocked by browser
+        setTimeout(() => {
+            if (introVideo.paused) {
+                // Autoplay blocked: Show play button
+                startBtn.style.display = 'block';
+                introVideo.style.opacity = '0.3';
+                
+                startBtn.addEventListener('click', () => {
+                    startBtn.style.display = 'none';
+                    introVideo.style.opacity = '1';
+                    introVideo.play();
+                });
+            }
+        }, 500); // 500ms allows the browser to attempt playback
+    </script>
+</body>
+</html>

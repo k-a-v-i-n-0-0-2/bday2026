@@ -1,0 +1,254 @@
+/* Gallery Specific Styles */
+
+.gallery-body {
+    overflow-y: auto; /* Gallery must scroll natively, unlike index.html */
+    scroll-behavior: smooth;
+}
+
+.gallery-overlay {
+    background: linear-gradient(
+        180deg, 
+        rgba(0, 0, 0, 0.7) 0%, 
+        rgba(0, 0, 0, 0.8) 50%, 
+        rgba(0, 0, 0, 0.9) 100%
+    ); /* Darker overlay for better visibility of photos */
+}
+
+.gallery-container {
+    position: relative;
+    z-index: 2;
+    padding: 100px 5vw 50px 5vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+/* Add Card in Grid */
+.add-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed rgba(242, 132, 130, 0.3);
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    text-align: center;
+    color: #888;
+    transition: all 0.3s ease;
+}
+
+.add-card:hover {
+    border-color: var(--accent-color);
+    background: rgba(242, 132, 130, 0.05);
+    color: #fff;
+    transform: scale(1.02);
+}
+
+.add-card.drag-active {
+    background: rgba(242, 132, 130, 0.15);
+    border-color: #fff;
+    transform: scale(1.05);
+}
+
+.add-card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.add-card span {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+}
+
+.add-card small {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.upload-progress {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+}
+
+.add-card.uploading i {
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 0.5; }
+    to { opacity: 1; transform: scale(1.1); }
+}
+
+/* Photo Grid */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Improved for mobile */
+    gap: 1rem;
+    width: 100%;
+    max-width: 1400px;
+}
+
+@media (max-width: 480px) {
+    .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 0.5rem;
+    }
+    .gallery-container {
+        padding: 80px 3vw 30px 3vw;
+    }
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.3s;
+}
+
+.photo-card:hover .delete-btn {
+    display: flex;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 0, 0, 0.7);
+}
+
+.photo-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.05); /* Placeholder */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.photo-card:hover img {
+    transform: scale(1.05);
+}
+
+.loading-spinner {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+/* Video inside cards */
+.photo-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    color: rgba(255,255,255,0.8);
+    pointer-events: none;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    transition: opacity 0.3s ease;
+}
+
+.photo-card:hover .play-overlay {
+    opacity: 0;
+}
+
+/* Lightbox Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content img, 
+.modal-content video {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    object-fit: contain;
+}
+
+.close-modal {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2001;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--accent-color);
+}
+
+.photo-card {
+    cursor: pointer;
+}

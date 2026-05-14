@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload to PriyaFlix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --netflix-red: #E50914;
+            --netflix-bg: #141414;
+            --netflix-text: #fff;
+            --card-bg: #2b2b2b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--netflix-bg);
+            color: var(--netflix-text);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .upload-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .nx-header {
+            position: fixed;
+            top: 0; width: 100%; height: 70px;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4%;
+            z-index: 1000;
+        }
+
+        .nx-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--netflix-red);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nx-back {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nx-back:hover { color: #fff; }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .drop-zone {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover, .drop-zone.drag-over {
+            border-color: var(--netflix-red);
+            background: rgba(229, 9, 20, 0.05);
+        }
+
+        .drop-zone i {
+            font-size: 3rem;
+            color: var(--netflix-red);
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        #file-preview {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: contain;
+            display: none;
+            background: #000;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.8rem;
+            background: #333;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .btn-upload {
+            width: 100%;
+            padding: 1rem;
+            background: var(--netflix-red);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-upload:hover {
+            background: #f40612;
+            transform: translateY(-2px);
+        }
+
+        .btn-upload:active {
+            transform: translateY(0);
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--netflix-red);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        #status-msg {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .success-msg { color: #4caf50 !important; }
+        .error-msg { color: #f44336 !important; }
+    </style>
+</head>
+<body>
+
+    <header class="nx-header">
+        <a href="netflix.html" class="nx-logo">PriyaFlix</a>
+        <a href="netflix.html" class="nx-back"><i class="fas fa-arrow-left"></i> Back to PriyaFlix</a>
+    </header>
+
+    <div class="upload-container">
+        <h1>Upload Media</h1>
+        
+        <div class="drop-zone" id="drop-zone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Drag & drop or click to select</p>
+            <img id="file-preview">
+            <video id="video-preview" style="display:none; width: 100%; height: 100%; background: #000;"></video>
+        </div>
+        
+        <input type="file" id="file-input" style="display: none;" accept="image/*,video/*">
+
+        <div class="form-group">
+            <label>Select Destination</label>
+            <select id="destination">
+                <option value="love">📂 Local: Love Category</option>
+                <option value="fun">📂 Local: Fun Category</option>
+                <option value="intimacy">📂 Local: Intimacy Category</option>
+                <option value="drive">☁️ Google Drive (Gallery)</option>
+            </select>
+        </div>
+
+        <button class="btn-upload" id="upload-btn">Start Upload</button>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <p id="status-msg">Preparing...</p>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const filePreview = document.getElementById('file-preview');
+        const videoPreview = document.getElementById('video-preview');
+        const uploadBtn = document.getElementById('upload-btn');
+        const destination = document.getElementById('destination');
+        const progressContainer = document.getElementById('progress-container');
+        const progressFill = document.getElementById('progress-fill');
+        const statusMsg = document.getElementById('status-msg');
+
+        let selectedFile = null;
+
+        dropZone.onclick = () => fileInput.click();
+
+        dropZone.ondragover = (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        };
+
+        dropZone.ondragleave = () => dropZone.classList.remove('drag-over');
+
+        dropZone.ondrop = (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) {
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        };
+
+        fileInput.onchange = () => {
+            if (fileInput.files.length) {
+                handleFileSelect(fileInput.files[0]);
+            }
+        };
+
+        function handleFileSelect(file) {
+            selectedFile = file;
+            filePreview.style.display = 'none';
+            videoPreview.style.display = 'none';
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filePreview.src = e.target.result;
+                    filePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('video/')) {
+                videoPreview.src = URL.createObjectURL(file);
+                videoPreview.style.display = 'block';
+                videoPreview.load();
+            }
+            
+            dropZone.querySelector('i').style.display = 'none';
+            dropZone.querySelector('p').style.display = 'none';
+        }
+
+        uploadBtn.onclick = async () => {
+            if (!selectedFile) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            const dest = destination.value;
+            const formData = new FormData();
+            
+            progressContainer.style.display = 'block';
+            statusMsg.textContent = 'Uploading...';
+            statusMsg.className = '';
+            progressFill.style.width = '0%';
+            uploadBtn.disabled = true;
+
+            const endpoint = dest === 'drive' ? '/api/upload' : '/api/upload-priyaflix';
+            
+            // Handle different field names for the two APIs
+            if (dest === 'drive') {
+                formData.append('photo', selectedFile);
+            } else {
+                formData.append('file', selectedFile);
+                formData.append('category', dest);
+            }
+
+            // Simple fetch upload
+            try {
+                // Note: Standard fetch doesn't have native progress events.
+                // For a real app we'd use XMLHttpRequest for a nice progress bar.
+                // Here we'll simulate it or just show a spinner if it's small.
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    progressFill.style.width = '100%';
+                    statusMsg.textContent = 'Success! File uploaded successfully.';
+                    statusMsg.className = 'success-msg';
+                    setTimeout(() => {
+                        if(confirm('Upload complete! View results in PriyaFlix?')) {
+                            window.location.href = 'netflix.html';
+                        }
+                    }, 1000);
+                } else {
+                    statusMsg.textContent = 'Error: ' + result.error;
+                    statusMsg.className = 'error-msg';
+                }
+            } catch (err) {
+                statusMsg.textContent = 'Connection error. Please try again.';
+                statusMsg.className = 'error-msg';
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
