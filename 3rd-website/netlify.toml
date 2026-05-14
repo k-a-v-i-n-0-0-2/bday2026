@@ -3,7 +3,7 @@
 # This file handles proxying requests to your Render backend.
 # 
 # !!! IMPORTANT !!!
-# REPLACE "https://bday2026-2.onrender.com" below with your actual 
+# REPLACE "https://bday2026-3.onrender.com" below with your actual 
 # Render Service URL (e.g., https://your-app-name.onrender.com)
 # after you create the service on Render.
 
@@ -12,37 +12,37 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://bday2026-2.onrender.com/api/:splat"
+  to = "https://bday2026-3.onrender.com/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/auth/*"
-  to = "https://bday2026-2.onrender.com/auth/:splat"
+  to = "https://bday2026-3.onrender.com/auth/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/login"
-  to = "https://bday2026-2.onrender.com/login"
+  to = "https://bday2026-3.onrender.com/login"
   status = 200
   force = true
 
 [[redirects]]
   from = "/logout"
-  to = "https://bday2026-2.onrender.com/logout"
+  to = "https://bday2026-3.onrender.com/logout"
   status = 200
   force = true
 
 [[redirects]]
   from = "/stream-intro"
-  to = "https://bday2026-2.onrender.com/stream-intro"
+  to = "https://bday2026-3.onrender.com/stream-intro"
   status = 200
   force = true
 
 [[redirects]]
   from = "/stream-video"
-  to = "https://bday2026-2.onrender.com/stream-video"
+  to = "https://bday2026-3.onrender.com/stream-video"
   status = 200
   force = true
 
@@ -53,7 +53,7 @@
 
 [[redirects]]
   from = "/kavin_priya/*"
-  to = "https://bday2026-2.onrender.com/kavin_priya/:splat"
+  to = "https://bday2026-3.onrender.com/kavin_priya/:splat"
   status = 200
   force = true
 
