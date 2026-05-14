@@ -221,13 +221,28 @@ if (G_CLIENT_ID && G_CLIENT_SECRET && G_REFRESH_TOKEN) {
     console.warn('⚠️  Google Drive credentials not found. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REFRESH_TOKEN env vars.');
 }
 
+// Ensure uploads directory exists
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
+
 // Accept images and videos (up to 100MB)
 const uploadMiddleware = multer({
     dest: 'uploads/',
     limits: { fileSize: 100 * 1024 * 1024 }
 });
 
-app.post('/api/upload', uploadMiddleware.single('photo'), async (req, res) => {
+app.post('/api/upload', (req, res, next) => {
+    uploadMiddleware.single('photo')(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({ error: 'Multer error: ' + err.message });
+        } else if (err) {
+            return res.status(500).json({ error: 'Unknown upload error: ' + err.message });
+        }
+        next();
+    });
+}, async (req, res) => {
     try {
         if (!drive) {
             return res.status(503).json({ error: 'Google Drive not configured. Run: node setup-auth.js YOUR_CLIENT_SECRET' });
@@ -332,7 +347,16 @@ app.get('/api/kavin_priya', (req, res) => {
 });
 
 // Endpoint to upload specifically to local PriyaFlix categories
-app.post('/api/upload-priyaflix', uploadMiddleware.single('file'), (req, res) => {
+app.post('/api/upload-priyaflix', (req, res, next) => {
+    uploadMiddleware.single('file')(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({ error: 'Multer error: ' + err.message });
+        } else if (err) {
+            return res.status(500).json({ error: 'Unknown upload error: ' + err.message });
+        }
+        next();
+    });
+}, (req, res) => {
     try {
         const { category } = req.body;
         if (!category || !['love', 'fun', 'intimacy'].includes(category)) {
