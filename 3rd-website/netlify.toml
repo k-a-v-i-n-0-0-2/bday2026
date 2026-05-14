@@ -1,8 +1,11 @@
 # Netlify Configuration for Priya's Birthday Site
 # ------------------------------------------------
 # This file handles proxying requests to your Render backend.
-# IMPORTANT: Replace "https://bday2026-2.onrender.com" with your actual Render service URL
-# (e.g., https://priya-bday-api.onrender.com)
+# 
+# !!! IMPORTANT !!!
+# REPLACE "https://bday2026-2.onrender.com" below with your actual 
+# Render Service URL (e.g., https://your-app-name.onrender.com)
+# after you create the service on Render.
 
 [build]
   publish = "public"

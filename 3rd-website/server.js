@@ -18,7 +18,19 @@ app.use(helmet({
     contentSecurityPolicy: false, // Disabled for local dev (streaming videos/CDNs)
 }));
 app.use(cors({
-    origin: true, // In production, we'll proxy so this is fine, or set to Netlify URL
+    origin: (origin, callback) => {
+        // Allow Netlify, local dev, and the Render backend itself
+        const allowedOrigins = [
+            /\.netlify\.app$/, 
+            /localhost/, 
+            /\.onrender\.com$/
+        ];
+        if (!origin || allowedOrigins.some(pattern => pattern.test(origin))) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 app.disable('x-powered-by'); // Hide server technology details
@@ -85,7 +97,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true, // Prevents JS from accessing the session cookie
-        sameSite: 'lax', // Protects against CSRF
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Use 'none' for cross-domain proxying
         secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }

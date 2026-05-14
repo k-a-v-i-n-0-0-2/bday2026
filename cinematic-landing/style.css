@@ -1,0 +1,106 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #05050a; /* Deep dark blue/black */
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* Video Background */
+#hero-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0; /* Fade in via JS */
+    transform: scale(1);
+    will-change: transform, opacity, filter;
+}
+
+/* Overlay for Cinematic Feel */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(5,5,10,0.8) 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Scroll Container */
+.scroll-container {
+    position: relative;
+    z-index: 3;
+}
+
+/* Sections */
+section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Specific Section Heights */
+.spacer-section {
+    height: 250vh; /* Extended scrolling space for video to play */
+}
+
+/* Typography */
+h1, h2 {
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.fade-text {
+    opacity: 1; /* GSAP controls this */
+}
+
+/* Minimal Stars */
+#stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle linear infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 0.8; transform: scale(1.2); }
+}

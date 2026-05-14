@@ -21,8 +21,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node 3rd-website/server.js",
     "build": "react-scripts build",
+    "postinstall": "npm install --prefix 3rd-website",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
