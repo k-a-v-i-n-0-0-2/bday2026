@@ -551,23 +551,11 @@
     <div id="profile-selection" style="display: none; opacity: 0; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--netflix-bg); z-index: 9998; flex-direction: column; justify-content: center; align-items: center; transition: opacity 1s ease;">
         <h1 style="font-size: 3vw; margin-bottom: 2rem; color: #fff; font-weight: 400;">Who's watching?</h1>
         <div style="display: flex; gap: 2vw;">
-            <div class="profile-card" onclick="selectProfile('Love')" style="text-align: center; cursor: pointer;">
-                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
-                    <img src="/kavin_priya/love/1710057843383.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="profile-card" onclick="selectProfile('Priya')" style="text-align: center; cursor: pointer;">
+                <div style="width: 12vw; height: 12vw; min-width: 120px; min-height: 120px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
+                    <img src="/p.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Love</span>
-            </div>
-            <div class="profile-card" onclick="selectProfile('Fun')" style="text-align: center; cursor: pointer;">
-                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
-                    <img src="/kavin_priya/fun/IMG_20240430_160925.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Fun</span>
-            </div>
-            <div class="profile-card" onclick="selectProfile('Intimacy')" style="text-align: center; cursor: pointer;">
-                <div style="width: 10vw; height: 10vw; min-width: 100px; min-height: 100px; border-radius: 4px; overflow: hidden; border: 3px solid transparent; transition: border 3px; margin-bottom: 1rem;" onmouseover="this.style.border='3px solid white'" onmouseout="this.style.border='3px solid transparent'">
-                    <img src="/kavin_priya/intimacy/1710057603933.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Intimacy</span>
+                <span style="color: #808080; font-size: 1.4vw; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#808080'">Priya</span>
             </div>
         </div>
     </div>
@@ -588,7 +576,7 @@
     <!-- Billboard -->
     <div class="nx-billboard">
         <video autoplay muted loop playsinline class="nx-billboard-vid" style="position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
-            <source src="/kavin_priya/fun/VID_20250218_113921247.mp4" type="video/mp4">
+            <source src="/stream-video" type="video/mp4">
         </video>
         <div class="nx-billboard-vignette"></div>
         <div class="nx-billboard-info">
@@ -630,12 +618,10 @@
                 <input type="text" id="edit-caption" placeholder="Enter custom title">
             </div>
 
-            <div class="field-group" id="edit-category-group">
+            <div class="field-group" id="edit-category-group" style="display:none;">
                 <label>Category</label>
                 <select id="edit-category">
-                    <option value="love">❤️ Love</option>
-                    <option value="fun">🎉 Fun</option>
-                    <option value="intimacy">💜 Intimacy</option>
+                    <option value="drive">☁️ Google Drive</option>
                 </select>
             </div>
 
@@ -703,19 +689,17 @@
         // Fetch dynamic content
         async function fetchAllMedia() {
             try {
-                const response = await fetch('/api/kavin_priya');
-                allMediaData = await response.json();
-                
-                // Also fetch Drive media
+                // Only fetch Drive media since local is no longer needed
                 const driveResponse = await fetch('/api/photos');
                 driveMediaData = await driveResponse.json();
+                allMediaData = { drive: driveMediaData }; 
             } catch (err) {
                 console.error('Failed to load media:', err);
             }
         }
 
         function renderContentForCategory(selectedCategory) {
-            if (!allMediaData) return;
+            if (!driveMediaData) return;
 
             const container = document.getElementById('rows-container');
             container.innerHTML = '';
@@ -726,77 +710,52 @@
             const billboardDesc = document.querySelector('.nx-billboard-desc');
             const billboardElement = document.querySelector('.nx-billboard');
 
-            // Map categories to display titles and descriptions
-            const categoryMeta = {
-                love: {
-                    title: "Everything About Love",
-                    desc: "A collection of our most romantic moments, captured in time forever."
-                },
-                fun: {
-                    title: "Fun Memories Together",
-                    desc: "The laughs, the adventures, and the pure joy of being us."
-                },
-                intimacy: {
-                    title: "Intimate Chapters",
-                    desc: "Close moments and quiet reflections that define our bond."
-                }
-            };
-
-            let excludedFile = null;
-
-            // Update Billboard based on category
-            if (selectedCategory && allMediaData[selectedCategory]) {
-                const categoryFiles = allMediaData[selectedCategory];
-                if (categoryFiles.length > 0) {
-                    const randomMedia = categoryFiles[Math.floor(Math.random() * categoryFiles.length)];
-                    excludedFile = randomMedia.path;
-                    
-                    if (excludedFile.toLowerCase().endsWith('.mp4') || excludedFile.toLowerCase().endsWith('.mov')) {
-                        billboardVidElement.style.display = 'block';
-                        billboardVid.src = excludedFile;
-                        billboardVidElement.load();
-                        billboardElement.style.backgroundImage = 'none';
-                    } else {
-                        billboardVidElement.style.display = 'none';
-                        billboardElement.style.backgroundImage = `url('${excludedFile}')`;
-                    }
-
-                    billboardTitle.textContent = categoryMeta[selectedCategory].title;
-                    billboardDesc.textContent = categoryMeta[selectedCategory].desc;
-
-                    // STRICT EXCLUSIVITY: Only show the selected category's row
-                    // Also filter out the one already shown in the billboard
-                    const remainingFiles = categoryFiles.filter(fileObj => fileObj.path !== excludedFile);
-                    renderRow(selectedCategory, remainingFiles, container, categoryMeta);
-                } else {
-                    // Even if empty, show the row so they can add
-                    renderRow(selectedCategory, [], container, categoryMeta);
-                }
-            } else {
-                // Show everything (Home mode)
-                for (const [category, files] of Object.entries(allMediaData)) {
-                    renderRow(category, files, container, categoryMeta);
-                }
+            // Update Billboard based on Drive content
+            if (driveMediaData.length > 0) {
+                const randomMedia = driveMediaData[Math.floor(Math.random() * driveMediaData.length)];
+                const isVideo = randomMedia.mimeType && randomMedia.mimeType.startsWith('video/');
                 
-                // Add Cloud Row
-                if (driveMediaData && driveMediaData.length > 0) {
-                    renderCloudRow(driveMediaData, container);
+                if (isVideo) {
+                    billboardVidElement.style.display = 'block';
+                    billboardVid.src = randomMedia.webContentLink;
+                    billboardVidElement.load();
+                    billboardElement.style.backgroundImage = 'none';
+                } else {
+                    billboardVidElement.style.display = 'none';
+                    billboardElement.style.backgroundImage = `url('/api/image/${randomMedia.id}')`;
                 }
+
+                billboardTitle.textContent = "Birthday Memories";
+                billboardDesc.textContent = "Every moment captured in our journey together, now safely stored in the cloud.";
+            }
+
+            // Render Drive Rows
+            const videos = driveMediaData.filter(p => p.mimeType && p.mimeType.startsWith('video/'));
+            const photos = driveMediaData.filter(p => p.mimeType && p.mimeType.startsWith('image/'));
+
+            if (videos.length > 0) {
+                renderDriveRow("Videos", videos, container);
+            }
+            if (photos.length > 0) {
+                renderDriveRow("Photos", photos, container);
+            }
+            if (driveMediaData.length > 0) {
+                renderDriveRow("All Memories", driveMediaData, container);
             }
         }
 
-        function renderCloudRow(photos, container) {
+        function renderDriveRow(title, mediaList, container) {
             const row = document.createElement('div');
             row.className = 'nx-row';
             
             const header = document.createElement('h2');
             header.className = 'nx-row-header';
-            header.textContent = "Google Drive Memories";
+            header.textContent = title;
             
             const slider = document.createElement('div');
             slider.className = 'nx-slider';
 
-            photos.forEach(photo => {
+            mediaList.forEach(photo => {
                 const card = document.createElement('div');
                 card.className = 'nx-card';
                 const viewUrl = `/api/image/${photo.id}`;
@@ -820,22 +779,20 @@
                 const actions = document.createElement('div');
                 actions.className = 'card-actions';
 
-                // Edit Button for Drive
+                // Edit Button
                 const editBtn = document.createElement('button');
                 editBtn.className = 'edit-btn';
                 editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-                editBtn.title = 'Edit this media';
                 editBtn.onclick = (e) => {
                     e.stopPropagation();
                     openEditModal(photo, 'drive');
                 };
                 actions.appendChild(editBtn);
 
-                // Delete Button for Drive
+                // Delete Button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                deleteBtn.title = 'Delete from Google Drive';
                 deleteBtn.onclick = (e) => {
                     e.stopPropagation();
                     if (confirm('Delete from Google Drive?')) {
@@ -858,6 +815,20 @@
                 slider.appendChild(card);
             });
 
+            // Append "Add Memory" Card (Direct to Drive)
+            const addCard = document.createElement('div');
+            addCard.className = 'nx-card add-card';
+            addCard.innerHTML = `
+                <i class="fas fa-plus"></i>
+                <span>Add to ${title}</span>
+                <div class="upload-progress" style="font-size: 0.7rem; margin-top: 5px;"></div>
+            `;
+            addCard.onclick = () => {
+                uploadType = 'drive';
+                document.getElementById('nx-file-input').click();
+            };
+            slider.appendChild(addCard);
+
             row.appendChild(header);
             row.appendChild(slider);
             container.appendChild(row);
@@ -873,112 +844,11 @@
             if (result.success) {
                 element.style.transform = 'scale(0)';
                 setTimeout(() => element.remove(), 300);
-            }
-        }
-
-        function renderRow(category, files, container, categoryMeta) {
-            const row = document.createElement('div');
-            row.className = 'nx-row';
-            
-            const header = document.createElement('h2');
-            header.className = 'nx-row-header';
-            header.textContent = categoryMeta[category]?.title || category.toUpperCase();
-            
-            const slider = document.createElement('div');
-            slider.className = 'nx-slider';
-
-            files.forEach(fileObj => {
-                const file = fileObj.path;
-                const captionText = fileObj.caption;
-                
-                const card = document.createElement('div');
-                card.className = 'nx-card';
-
-                // Media container
-                const mediaBox = document.createElement('div');
-                mediaBox.className = 'nx-card-media';
-                
-                if (file.toLowerCase().endsWith('.mp4') || file.toLowerCase().endsWith('.mov')) {
-                    const vid = document.createElement('video');
-                    vid.src = file;
-                    vid.muted = true;
-                    mediaBox.appendChild(vid);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = file;
-                    mediaBox.appendChild(img);
-                }
-
-                // Card Action Buttons Container
-                const actions = document.createElement('div');
-                actions.className = 'card-actions';
-
-                // Edit Button
-                const editBtn = document.createElement('button');
-                editBtn.className = 'edit-btn';
-                editBtn.innerHTML = '<i class="fas fa-pen"></i>';
-                editBtn.title = 'Edit this media';
-                editBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    openEditModal(fileObj, category);
-                };
-                actions.appendChild(editBtn);
-
-                // Delete Button
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                deleteBtn.title = 'Delete this media';
-                deleteBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (confirm('Delete this memory?')) {
-                        deleteMedia(file, card);
-                    }
-                };
-                actions.appendChild(deleteBtn);
-
-                mediaBox.appendChild(actions);
-                card.appendChild(mediaBox);
-
-                // Caption
-                const caption = document.createElement('div');
-                caption.className = 'nx-card-caption';
-                const filename = file.split('/').pop();
-                const ext = filename.split('.').pop().toUpperCase();
-                const isVideo = ['MP4', 'MOV'].includes(ext);
-                const displayTitle = captionText || filename;
-                caption.innerHTML = `<div class="caption-title">${displayTitle}</div><div class="caption-type">${isVideo ? '🎬 Video' : '📷 Photo'}</div>`;
-                card.appendChild(caption);
-
-                slider.appendChild(card);
-            });
-
-
-            // Append "Add Memory" Card
-            const addCard = document.createElement('div');
-            addCard.className = 'nx-card add-card';
-            addCard.id = `add-card-${category}`;
-            addCard.innerHTML = `
-                <div style="display: flex; gap: 15px; margin-bottom: 5px;">
-                    <button class="upload-choice-btn" title="Upload to Local folder" onclick="triggerUpload('${category}', 'local')">📁</button>
-                    <button class="upload-choice-btn" title="Upload to Google Drive" onclick="triggerUpload('${category}', 'drive')">☁️</button>
-                </div>
-                <span>Add to ${category}</span>
-                <div class="upload-progress" style="font-size: 0.7rem; margin-top: 5px;"></div>
-            `;
-            // Removed direct onclick, using triggerUpload instead
-            slider.appendChild(addCard);
-
-            row.appendChild(header);
-            row.appendChild(slider);
-            container.appendChild(row);
-        }
-
-        let uploadType = 'local';
+              let uploadType = 'drive';
 
         function triggerUpload(category, type) {
-            currentActiveCategory = category;
-            uploadType = type;
+            currentActiveCategory = 'drive';
+            uploadType = 'drive';
             document.getElementById('nx-file-input').click();
         }
 
@@ -988,16 +858,31 @@
             if (fileInput.files.length === 0) return;
             
             const file = fileInput.files[0];
-            const category = currentActiveCategory;
-            const addCard = document.getElementById(`add-card-${category}`);
-            const progress = addCard.querySelector('.upload-progress');
-
             const formData = new FormData();
-            formData.append('file', file);
-            formData.append('category', category);
+            formData.append('photo', file);
 
-            progress.textContent = 'Uploading...';
-            addCard.style.pointerEvents = 'none';
+            // Find any active add-cards to show progress
+            const progressIndicators = document.querySelectorAll('.upload-progress');
+            progressIndicators.forEach(p => p.textContent = 'Uploading...');
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    progressIndicators.forEach(p => p.textContent = 'Success!');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    progressIndicators.forEach(p => p.textContent = 'Error');
+                    alert('Upload failed: ' + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                progressIndicators.forEach(p => p.textContent = 'Error');
+            }
+        });rd.style.pointerEvents = 'none';
             addCard.style.opacity = '0.7';
 
             try {
